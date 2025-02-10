@@ -1,0 +1,91 @@
+/* Container for the signup form */
+.signup-form-container {
+    background: #ffffff; /* White background */
+    padding: 32px; /* Inner padding */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 400px; /* Fixed width */
+    margin: 0 auto; /* Center horizontally */
+    margin-top:150px;
+  }
+  
+  /* Heading styles */
+  .signup-form-heading {
+    font-size: 1.5rem; /* 24px */
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #1f2937; /* Gray-800 */
+    text-align: center;
+  }
+  
+  /* Error message styles */
+  .signup-form-error {
+    color: #b91c1c; /* Red-500 */
+    font-size: 0.875rem; /* 14px */
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* Input field styles */
+  .signup-form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db; /* Gray-300 */
+    border-radius: 6px;
+    font-size: 0.875rem; /* 14px */
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .signup-form-input:focus {
+    outline: none;
+    border-color: #3b82f6; /* Blue-500 */
+    box-shadow: 0px 0px 0px 3px rgba(59, 130, 246, 0.2); /* Focus ring */
+  }
+  
+  /* Button styles */
+  .signup-form-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #2563eb; /* Blue-500 */
+    color: white;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .signup-form-button .text {
+    color: white;  
+  }
+  
+  .signup-form-button:hover {
+    background-color: #1d4ed8; /* Blue-600 */
+  }
+  
+  .signup-form-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Toggle link styles */
+  .signup-form-toggle {
+    display: block;
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.875rem; /* 14px */
+    color: #3b82f6; /* Blue-500 */
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .signup-form-toggle:hover {
+    color: #2563eb; /* Blue-600 */
+    text-decoration: underline;
+  }
+
+  .signup-form-toggle .redirect{
+    color: #fff;
+  }
