@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const response = await fetch('https://rapid-grossly-raven.ngrok-free.app/login', {
+      const response = await fetch('https://rapid-grossly-raven.ngrok-free.app/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password) => {
     setLoading(true);
     try {
-      const response = await fetch('https://rapid-grossly-raven.ngrok-free.app/signup', {
+      const response = await fetch('https://rapid-grossly-raven.ngrok-free.app/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
