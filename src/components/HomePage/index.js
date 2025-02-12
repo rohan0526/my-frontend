@@ -1,7 +1,55 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './CSS/index.css';
-import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine } from 'lucide-react';
+import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu } from 'lucide-react';
+
+const QueryApp = () => {
+    const [query, setQuery] = useState("");
+    const [response, setResponse] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const sendQuery = async () => {
+        if (!query.trim()) return;
+        setLoading(true);
+        setResponse("");
+        try {
+            const res = await fetch("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query }),
+            });
+            const data = await res.json();
+            setResponse(data.response);
+        } catch (error) {
+            setResponse("Error fetching response.");
+        }
+        setLoading(false);
+    };
+
+    return (
+        <div className="w-full max-w-3xl mx-auto p-6">
+            <h1 className="text-2xl font-bold mb-6">AI Assistant</h1>
+            <textarea
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Type your question here..."
+                className="w-full p-4 border rounded-lg mb-4 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+            ></textarea>
+            <button 
+                onClick={sendQuery} 
+                disabled={loading}
+                className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {loading ? "Loading..." : "Submit"}
+            </button>
+            {response && (
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                    <p className="text-gray-700 whitespace-pre-wrap">{response}</p>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export const HomePage = () => {
   const { user, logout } = useAuth();
@@ -11,6 +59,8 @@ export const HomePage = () => {
 
   const renderContent = () => {
     switch(activeTab) {
+      case 'ai-assistant':
+        return <QueryApp />;
       case 'home':
         return (
           <div className="welcome-card flex justify-center items-center min-h-[calc(100vh-140px)]">
@@ -120,11 +170,9 @@ export const HomePage = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Rest of the code remains the same */}
       <aside className="sidebar">
         <div className="sidebar-header">
-          <div
-            onClick={() => setActiveTab('profile')}>
+          <div onClick={() => setActiveTab('profile')}>
             <User size={40}/>
           </div>
         </div>
@@ -134,6 +182,12 @@ export const HomePage = () => {
             onClick={() => setActiveTab('home')}
           >
             <Home className="inline-block mr-2" /> Home
+          </li>
+          <li 
+            className={activeTab === 'ai-assistant' ? 'active' : ''} 
+            onClick={() => setActiveTab('ai-assistant')}
+          >
+            <Cpu className="inline-block mr-2" /> AI Assistant
           </li>
           <li 
             className={activeTab === 'profile' ? 'active' : ''} 
@@ -167,6 +221,6 @@ export const HomePage = () => {
           {renderContent()}
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 };
