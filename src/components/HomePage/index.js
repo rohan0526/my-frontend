@@ -2,53 +2,58 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './CSS/index.css';
 import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+
 
 const QueryApp = () => {
-    const [query, setQuery] = useState("");
-    const [response, setResponse] = useState("");
-    const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const sendQuery = async () => {
-        if (!query.trim()) return;
-        setLoading(true);
-        setResponse("");
-        try {
-            const res = await fetch("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ query }),
-            });
-            const data = await res.json();
-            setResponse(data.response);
-        } catch (error) {
-            setResponse("Error fetching response.");
-        }
-        setLoading(false);
-    };
+  const sendQuery = async () => {
+      if (!query.trim()) return;
+      setLoading(true);
+      setResponse("");
 
-    return (
-        <div className="w-full max-w-3xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">AI Assistant</h1>
-            <textarea
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Type your question here..."
-                className="w-full p-4 border rounded-lg mb-4 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
-            ></textarea>
-            <button 
-                onClick={sendQuery} 
-                disabled={loading}
-                className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                {loading ? "Loading..." : "Submit"}
-            </button>
-            {response && (
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                    <p className="text-gray-700 whitespace-pre-wrap">{response}</p>
-                </div>
-            )}
-        </div>
-    );
+      try {
+          const res = await fetch("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ query }),
+          });
+
+          const data = await res.json();
+          setResponse(data.response || "No response received.");
+      } catch (error) {
+          setResponse("Error fetching response.");
+      }
+
+      setLoading(false);
+  };
+
+  return (
+      <div className="query-container">
+          <h1 className="query-title">AI Assistant</h1>
+          <textarea
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Type your question here..."
+              className="query-textarea"
+          ></textarea>
+          <button
+              onClick={sendQuery}
+              disabled={loading}
+              className="query-submit"
+          >
+              {loading ? "Loading..." : "Submit"}
+          </button>
+          {response && (
+              <div className="query-response">
+                  <ReactMarkdown>{response}</ReactMarkdown>
+              </div>
+          )}
+      </div>
+  );
 };
 
 export const HomePage = () => {
