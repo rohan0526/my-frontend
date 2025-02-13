@@ -1,19 +1,28 @@
-import React from 'react';
-import { AuthProvider } from './context/AuthContext';
-import { AuthPage } from './components/AuthPage';
-import { HomePage } from './components/HomePage';
-import { useAuth } from './context/AuthContext';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthPage } from "./components/AuthPage";
+import { HomePage } from "./components/HomePage";
+import { Chat } from "./components/Chat";
 
 const AppContent = () => {
   const { user } = useAuth();
-  console.log('Current user:', user);
-  return user ? <HomePage /> : <AuthPage />;
+
+  return (
+    <Routes>
+      <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
+      <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
+      <Route path="/chat" element={user ? <Chat /> : <Navigate to="/auth" />} />
+    </Routes>
+  );
 };
 
 export const App = () => {
   return (
     <AuthProvider>
-      <AppContent />
+      <Router>
+        <AppContent />
+      </Router>
     </AuthProvider>
   );
-}; 
+};
