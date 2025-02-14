@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { AuthPage } from "./components/AuthPage";
 import { HomePage } from "./components/HomePage";
 import { Chat } from "./components/Chat";
+import { PaperTrading } from "./components/PaperTrading";
 
 const AppContent = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const AppContent = () => {
       <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
       <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
       <Route path="/chat" element={user ? <Chat /> : <Navigate to="/auth" />} />
+      <Route path="/papertrading" element={user ? <PaperTrading /> : <Navigate to="/auth" />} />
     </Routes>
   );
 };

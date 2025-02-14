@@ -66,6 +66,12 @@ export const HomePage = () => {
     }
   }, [activeTab, navigate]);
 
+  useEffect(() => {
+    if (activeTab === "paper-trading") {
+      navigate("/papertrading");
+    }
+  }, [activeTab, navigate]);
+
   const renderContent = () => {
     switch (activeTab) {
       case "home":
@@ -179,6 +185,9 @@ export const HomePage = () => {
           </li>
           <li className={activeTab === "ai-assistant" ? "active" : ""} onClick={() => setActiveTab("ai-assistant")}>
             <Cpu className="inline-block mr-2" /> AI Assistant
+          </li>
+          <li className={activeTab === "paper-trading" ? "active" : ""} onClick={() => setActiveTab("paper-trading")}>
+            <Cpu className="inline-block mr-2" /> Paper Trading
           </li>
           <li className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             <User className="inline-block mr-2" /> Profile
