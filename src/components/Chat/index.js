@@ -9,6 +9,7 @@ export const Chat = () => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -17,7 +18,7 @@ export const Chat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,6 +71,7 @@ export const Chat = () => {
     });
 
     const handleAiResponse = (data) => {
+      setIsTyping(false);
       if (data && data.response) {
         setMessages((prev) => [...prev, { sender: "Bot", text: data.response }]);
       }
@@ -97,6 +99,12 @@ export const Chat = () => {
       setMessages((prev) => [...prev, { sender: "You", text: trimmedInput }]);
       socket.emit("user_message", { query: trimmedInput });
       setInput("");
+      setIsTyping(true);
+      
+      // Add timeout to hide typing indicator if no response received
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 30000);
     }
   };
 
@@ -110,7 +118,7 @@ export const Chat = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h2>Chat with AI Financial Expert</h2>
+        <h2>Financial Assistant</h2>
         <div className={`connection-status ${isConnected ? "connected" : ""}`}>
           {isConnected ? "Connected" : "Connecting..."}
         </div>
@@ -119,6 +127,21 @@ export const Chat = () => {
       {error && <div className="error-message">{error}</div>}
 
       <div className="chat-messages">
+        {messages.length === 0 && (
+          <div className="welcome-message message bot">
+            <div className="message-sender">Bot</div>
+            <div className="message-content">
+              👋 Hello! I'm your AI Financial Assistant. Feel free to ask me about:
+              <ul>
+                <li>Stock market analysis</li>
+                <li>Trading strategies</li>
+                <li>Portfolio management</li>
+                <li>Financial terms and concepts</li>
+              </ul>
+            </div>
+          </div>
+        )}
+        
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender.toLowerCase()}`}>
             <div className="message-sender">{msg.sender}</div>
@@ -127,16 +150,29 @@ export const Chat = () => {
             </div>
           </div>
         ))}
+        
+        {isTyping && (
+          <div className="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input-container">
         <textarea
           className="chat-input"
-          placeholder="Ask a financial question..."
+          placeholder="Ask about stocks, trading strategies, or financial concepts..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           disabled={!isConnected}
         />
         <button 
@@ -144,7 +180,7 @@ export const Chat = () => {
           onClick={sendMessage}
           disabled={!isConnected || !input.trim()}
         >
-          Send
+          {isConnected ? "Send" : "Connecting..."}
         </button>
       </div>
     </div>

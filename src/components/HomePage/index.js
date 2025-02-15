@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./CSS/index.css";
-import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu } from "lucide-react";
+import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu, X, MessageCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const QueryApp = () => {
   const [query, setQuery] = useState("");
@@ -58,7 +59,57 @@ export const HomePage = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [isWriting, setIsWriting] = useState(false);
   const [postContent, setPostContent] = useState("");
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [portfolio, setPortfolio] = useState([]);
   const navigate = useNavigate();
+
+  // Fetch portfolio data
+  const fetchPortfolio = async () => {
+    try {
+      const response = await axios.get("https://rapid-grossly-raven.ngrok-free.app/trade/portfolio", {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json",
+        },
+      });
+      setPortfolio(response.data.portfolio || []);
+    } catch (error) {
+      console.error("Error fetching portfolio:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
+
+  const sendMessage = async () => {
+    if (!chatInput.trim()) return;
+
+    // Add user message to chat
+    const userMessage = { sender: "You", text: chatInput };
+    setChatMessages(prev => [...prev, userMessage]);
+    setChatInput("");
+    setIsTyping(true);
+
+    try {
+      // Include portfolio data in the query
+      const response = await axios.post("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
+        query: chatInput,
+        portfolio: portfolio // Send portfolio data along with the query
+      });
+
+      setIsTyping(false);
+      if (response.data.response) {
+        setChatMessages(prev => [...prev, { sender: "Bot", text: response.data.response }]);
+      }
+    } catch (error) {
+      setIsTyping(false);
+      setChatMessages(prev => [...prev, { sender: "Bot", text: "Sorry, I encountered an error." }]);
+    }
+  };
 
   useEffect(() => {
     if (activeTab === "ai-assistant") {
@@ -189,9 +240,6 @@ export const HomePage = () => {
           <li className={activeTab === "home" ? "active" : ""} onClick={() => setActiveTab("home")}>
             <Home className="inline-block mr-2" /> Home
           </li>
-          <li className={activeTab === "ai-assistant" ? "active" : ""} onClick={() => setActiveTab("ai-assistant")}>
-            <Cpu className="inline-block mr-2" /> AI Assistant
-          </li>
           <li className={activeTab === "paper-trading" ? "active" : ""} onClick={() => setActiveTab("paper-trading")}>
             <Cpu className="inline-block mr-2" /> Paper Trading
           </li>
@@ -216,6 +264,71 @@ export const HomePage = () => {
         </header>
 
         <div className="content-area">{renderContent()}</div>
+
+        {/* Chat Popup Button */}
+        <button 
+          className="chat-toggle-button"
+          onClick={() => setIsChatOpen(!isChatOpen)}
+        >
+          <MessageCircle size={24} />
+        </button>
+
+        {/* Chat Popup Window */}
+        {isChatOpen && (
+          <div className="chat-popup">
+            <div className="chat-popup-header">
+              <h3>Financial Assistant</h3>
+              <button onClick={() => setIsChatOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="chat-popup-messages">
+              {chatMessages.length === 0 && (
+                <div className="welcome-message">
+                  <p>👋 Hello! I'm your AI Financial Assistant. I can help you with:</p>
+                  <ul>
+                    <li>Portfolio analysis</li>
+                    <li>Stock market insights</li>
+                    <li>Trading strategies</li>
+                    <li>Financial concepts</li>
+                  </ul>
+                </div>
+              )}
+              
+              {chatMessages.map((msg, index) => (
+                <div key={index} className={`chat-message ${msg.sender.toLowerCase()}`}>
+                  <div className="message-content">
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  </div>
+                </div>
+              ))}
+              
+              {isTyping && (
+                <div className="typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              )}
+            </div>
+
+            <div className="chat-popup-input">
+              <textarea
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask me anything about your portfolio or finances..."
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+              />
+              <button onClick={sendMessage}>Send</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
