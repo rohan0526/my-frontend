@@ -72,6 +72,12 @@ export const HomePage = () => {
     }
   }, [activeTab, navigate]);
 
+  useEffect(() => {
+    if (activeTab === "trading-view") {
+      navigate("/tradingview");
+    }
+  }, [activeTab, navigate]);
+
   const renderContent = () => {
     switch (activeTab) {
       case "home":
@@ -188,6 +194,9 @@ export const HomePage = () => {
           </li>
           <li className={activeTab === "paper-trading" ? "active" : ""} onClick={() => setActiveTab("paper-trading")}>
             <Cpu className="inline-block mr-2" /> Paper Trading
+          </li>
+          <li className={activeTab === "trading-view" ? "active" : ""} onClick={() => setActiveTab("trading-view")}>
+            <Cpu className="inline-block mr-2" /> Trading View
           </li>
           <li className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             <User className="inline-block mr-2" /> Profile
