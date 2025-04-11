@@ -5,6 +5,7 @@ import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu, X, Mess
 import ReactMarkdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import StockNews from "../StockNews";
 
 const QueryApp = () => {
   const [query, setQuery] = useState("");
@@ -118,75 +119,195 @@ export const HomePage = () => {
   }, [activeTab, navigate]);
 
   useEffect(() => {
-    if (activeTab === "paper-trading") {
-      navigate("/papertrading");
-    }
-  }, [activeTab, navigate]);
-
-  useEffect(() => {
     if (activeTab === "trading-view") {
       navigate("/tradingview");
     }
   }, [activeTab, navigate]);
 
+  const renderFinGeniusHomepage = () => {
+    return (
+      <div className="fingenius-homepage">
+        {/* Enhanced Hero Section with Animation */}
+        <section className="hero-section">
+          <div className="hero-content">
+            <h1 className="animated-gradient">Welcome to FinGenius</h1>
+            <p className="subtitle">Your Personal AI Financial Assistant</p>
+            <p className="description">
+              Make smarter financial decisions with our cutting-edge AI tools, real-time
+              market insights, and interactive learning experiences.
+            </p>
+            <div className="hero-buttons">
+              <button className="primary-button pulse-animation" onClick={() => setActiveTab("ai-assistant")}>
+                Try AI Assistant
+              </button>
+              <button className="secondary-button" onClick={() => setActiveTab("trading-view")}>
+                Start Trading
+              </button>
+            </div>
+            {/* Add animated indicators */}
+            <div className="market-indicators">
+              <div className="indicator up">
+                <span className="symbol">NASDAQ</span>
+                <span className="value">+1.2%</span>
+              </div>
+              <div className="indicator up">
+                <span className="symbol">S&P 500</span>
+                <span className="value">+0.8%</span>
+              </div>
+              <div className="indicator down">
+                <span className="symbol">DOW</span>
+                <span className="value">-0.3%</span>
+              </div>
+            </div>
+          </div>
+          <div className="hero-image">
+            <img src="/images/financial-ai.png" alt="Financial AI" className="floating-animation" />
+            <div className="glowing-orb"></div>
+          </div>
+        </section>
+
+        {/* Colorful Stats Section - New Addition */}
+        <section className="stats-section">
+          <div className="stat-card purple">
+            <h3>10,000+</h3>
+            <p>Active Users</p>
+          </div>
+          <div className="stat-card blue">
+            <h3>$500M+</h3>
+            <p>Analyzed Assets</p>
+          </div>
+          <div className="stat-card teal">
+            <h3>95%</h3>
+            <p>User Satisfaction</p>
+          </div>
+          <div className="stat-card orange">
+            <h3>24/7</h3>
+            <p>AI Support</p>
+          </div>
+        </section>
+
+        {/* Enhanced Features Section with Icons */}
+        <section className="features-section">
+          <h2 className="section-title">Discover Our Features</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon ai-icon"></div>
+              <h3>AI Financial Assistant</h3>
+              <p>Get personalized financial advice and insights from our advanced AI.</p>
+              <button className="feature-button" onClick={() => setActiveTab("ai-assistant")}>Try Now</button>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon trading-icon"></div>
+              <h3>Trading View</h3>
+              <p>Analyze markets with professional-grade trading charts and tools.</p>
+              <button className="feature-button" onClick={() => setActiveTab("trading-view")}>Start Trading</button>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon news-icon"></div>
+              <h3>Stock News</h3>
+              <p>Stay updated with the latest market news and financial insights.</p>
+              <button className="feature-button" onClick={() => setActiveTab("stock-news")}>Read News</button>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon games-icon"></div>
+              <h3>Finance Games</h3>
+              <p>Learn financial concepts through interactive and fun games.</p>
+              <button className="feature-button" onClick={() => setActiveTab("finance-games")}>Play Now</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Improved How It Works Section */}
+        <section className="how-it-works-section">
+          <h2 className="section-title">How FinGenius Works</h2>
+          <div className="steps-container">
+            <div className="step-card">
+              <div className="step-number">1</div>
+              <h3>Sign Up</h3>
+              <p>Create your account in seconds and set your financial goals.</p>
+            </div>
+            <div className="connector"></div>
+            <div className="step-card">
+              <div className="step-number">2</div>
+              <h3>Connect</h3>
+              <p>Link your financial accounts or explore market data.</p>
+            </div>
+            <div className="connector"></div>
+            <div className="step-card">
+              <div className="step-number">3</div>
+              <h3>Get Insights</h3>
+              <p>Receive AI-powered financial advice tailored to your needs.</p>
+            </div>
+            <div className="connector"></div>
+            <div className="step-card">
+              <div className="step-number">4</div>
+              <h3>Take Action</h3>
+              <p>Make informed decisions based on data-driven recommendations.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced Testimonials Section */}
+        <section className="testimonials-section">
+          <h2 className="section-title">What Our Users Say</h2>
+          <div className="testimonial-card highlighted">
+            <div className="quote-mark">"</div>
+            <p className="testimonial-text">
+              FinGenius has completely transformed how I manage my investments. The AI
+              recommendations have been spot on!
+            </p>
+            <div className="testimonial-author-box">
+              <div className="testimonial-avatar"></div>
+              <p className="testimonial-author">Sarah J., Investor</p>
+            </div>
+          </div>
+          <div className="testimonial-navigation">
+            <div className="nav-dot active"></div>
+            <div className="nav-dot"></div>
+            <div className="nav-dot"></div>
+            <div className="nav-dot"></div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="fingenius-footer">
+          <div className="footer-column">
+            <h3>FinGenius</h3>
+            <p>Your AI-powered financial assistant that helps you make smarter financial decisions.</p>
+            <div className="social-icons">
+              <div className="social-icon"></div>
+              <div className="social-icon"></div>
+              <div className="social-icon"></div>
+            </div>
+          </div>
+          <div className="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li onClick={() => setActiveTab("home")}>Home</li>
+              <li onClick={() => setActiveTab("ai-assistant")}>AI Assistant</li>
+              <li onClick={() => setActiveTab("trading-view")}>Trading View</li>
+              <li>Stock News</li>
+              <li>Finance Games</li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h3>Contact Us</h3>
+            <p>support@fingenius.com</p>
+            <p>+1 (123) 456-7890</p>
+            <p>123 Finance Street, New York, NY</p>
+          </div>
+          <div className="footer-bottom">
+            <p>© 2023 FinGenius. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    );
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "home":
-        return (
-          <div className="welcome-card flex justify-center items-center min-h-[calc(100vh-140px)]">
-            {!isWriting ? (
-              <div className="flex flex-col items-center justify-center py-8">
-                <div
-                  className="flex justify-center items-center cursor-pointer hover:bg-gray-100 rounded-full w-14 h-14 transition-colors duration-200"
-                  onClick={() => setIsWriting(true)}
-                >
-                  <PenLine size={28} className="text-gray-600" />
-                </div>
-                <p className="text-gray-500 mt-2 text-sm">Click to create a post</p>
-              </div>
-            ) : (
-              <div className="bg-white rounded-xl shadow-lg w-[800px]">
-                <div className="p-4 border-b border-gray-100">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                      <User size={20} className="text-gray-500" />
-                    </div>
-                    <div className="text-sm font-medium text-gray-700">{user?.email}</div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <textarea
-                    className="w-full resize-none p-4 h-[200px] text-gray-700 text-lg placeholder-gray-400 focus:outline-none text-center"
-                    placeholder="What's on your mind?"
-                    value={postContent}
-                    onChange={(e) => setPostContent(e.target.value)}
-                  />
-                </div>
-                <div className="px-6 py-4 border-t border-gray-100 flex justify-end items-center bg-gray-50 rounded-b-xl">
-                  <button
-                    className="px-8 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium"
-                    onClick={() => {
-                      setIsWriting(false);
-                      setPostContent("");
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="px-8 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200 font-medium"
-                    onClick={() => {
-                      // Handle post submission
-                      setIsWriting(false);
-                      setPostContent("");
-                    }}
-                  >
-                    Post
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        );
+        return renderFinGeniusHomepage();
       case "profile":
         return (
           <div className="welcome-card">
@@ -225,44 +346,60 @@ export const HomePage = () => {
             </div>
           </div>
         );
+      case "stock-news":
+        return <StockNews />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        <div className="sidebar-header" onClick={() => setActiveTab("profile")}>
-          <User size={40} />
-        </div>
-        <ul>
-          <li className={activeTab === "home" ? "active" : ""} onClick={() => setActiveTab("home")}>
-            <Home className="inline-block mr-2" /> Home
-          </li>
-          <li className={activeTab === "paper-trading" ? "active" : ""} onClick={() => setActiveTab("paper-trading")}>
-            <Cpu className="inline-block mr-2" /> Paper Trading
-          </li>
-          <li className={activeTab === "trading-view" ? "active" : ""} onClick={() => setActiveTab("trading-view")}>
-            <Cpu className="inline-block mr-2" /> Trading View
-          </li>
-          <li className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
-            <User className="inline-block mr-2" /> Profile
-          </li>
-          <li className={activeTab === "settings" ? "active" : ""} onClick={() => setActiveTab("settings")}>
-            <Settings className="inline-block mr-2" /> Settings
-          </li>
-        </ul>
-      </aside>
-
-      <div className="main-content">
-        <header className="top-bar">
-          <div className="user-profile-icon cursor-pointer" onClick={() => setActiveTab("profile")}>
-            <User size={24} />
+    <div className="dashboard-container no-sidebar">
+      <header className="main-header">
+        <div className="header-left">
+          <div className="logo-container">
+            <img src="/images/logo-small.png" alt="FinGenius" className="logo-img" />
+            <span className="logo-text">FinGenius</span>
           </div>
-          <span className="user-info">Welcome, {user?.email}</span>
-        </header>
+        </div>
+        
+        <nav className="main-nav">
+          <ul className="nav-links">
+            <li className={activeTab === "home" ? "active" : ""} onClick={() => setActiveTab("home")}>
+              Home
+            </li>
+            <li className={activeTab === "ai-assistant" ? "active" : ""} onClick={() => setActiveTab("ai-assistant")}>
+              AI Assistant
+            </li>
+            <li className={activeTab === "trading-view" ? "active" : ""} onClick={() => setActiveTab("trading-view")}>
+              Trading View
+            </li>
+            <li className={activeTab === "stock-news" ? "active" : ""} onClick={() => setActiveTab("stock-news")}>
+              Stock News
+            </li>
+            <li className={activeTab === "finance-games" ? "active" : ""} onClick={() => setActiveTab("finance-games")}>
+              Finance Games
+            </li>
+          </ul>
+        </nav>
+        
+        <div className="header-right">
+          {user ? (
+            <div className="user-profile" onClick={() => setActiveTab("profile")}>
+              <span className="user-name">{user.email}</span>
+              <div className="user-avatar">
+                <User size={20} />
+              </div>
+            </div>
+          ) : (
+            <button className="login-button" onClick={() => navigate("/login")}>
+              Login
+            </button>
+          )}
+        </div>
+      </header>
 
+      <div className="main-content full-width">
         <div className="content-area">{renderContent()}</div>
 
         {/* Chat Popup Button */}
@@ -330,6 +467,20 @@ export const HomePage = () => {
           </div>
         )}
       </div>
+
+      {/* Profile and Settings dropdown (can be shown when user clicks on profile) */}
+      {activeTab === "profile" && (
+        <div className="profile-dropdown">
+          <div className="dropdown-option" onClick={() => setActiveTab("settings")}>
+            <Settings size={16} />
+            <span>Settings</span>
+          </div>
+          <div className="dropdown-option logout" onClick={logout}>
+            <LogOut size={16} />
+            <span>Logout</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
