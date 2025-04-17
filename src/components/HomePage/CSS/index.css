@@ -848,6 +848,7 @@
 .header-right {
   display: flex;
   align-items: center;
+  gap: 0.8rem;
 }
 
 .user-profile {
@@ -1298,4 +1299,88 @@
   .market-indicators {
     flex-wrap: wrap; /* Allow wrapping on very small screens */
   }
+}
+
+/* Token Display Styling */
+.token-display {
+  background: #f0f4ff;
+  font-size: 0.8rem;
+  color: #4a63e7;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  margin-right: 1rem;
+  font-family: monospace;
+  border: 1px solid #e0e7ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  letter-spacing: 0.5px;
+}
+
+/* Token Section in Profile */
+.token-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.token-container {
+  background: #f7f9ff;
+  border: 1px solid #e0e7ff;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 0.8rem 0;
+  position: relative;
+}
+
+.token-text {
+  font-family: monospace;
+  word-break: break-all;
+  color: #4a63e7;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.token-info {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* User ID display */
+.user-id-display {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  font-family: monospace;
+  background: #f0f4ff;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+/* User credentials in header */
+.user-credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-right: 1rem;
+}
+
+.userid-display {
+  background: #f0f4ff;
+  font-size: 0.8rem;
+  color: #4a63e7;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-family: monospace;
+  border: 1px solid #e0e7ff;
+  white-space: nowrap;
+}
+
+/* Make token display shorter for better fit */
+.token-display {
+  margin-right: 0;
 }

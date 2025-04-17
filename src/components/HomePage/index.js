@@ -11,7 +11,29 @@ const QueryApp = () => {
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
+
+  // Get token and userId from localStorage
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        if (userData.user_id) {
+          setUserId(userData.user_id);
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
 
   const sendQuery = async () => {
     if (!query.trim()) return;
@@ -21,8 +43,14 @@ const QueryApp = () => {
     try {
       const res = await fetch("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": token ? `Bearer ${token}` : ""
+        },
+        body: JSON.stringify({ 
+          query,
+          user_id: userId // Include user ID in the request body
+        }),
       });
 
       const data = await res.json();
@@ -65,7 +93,30 @@ export const HomePage = () => {
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [portfolio, setPortfolio] = useState([]);
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
+
+  // Get token and userId from localStorage
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+    
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        if (userData.user_id) {
+          setUserId(userData.user_id);
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
 
   // Fetch portfolio data
   const fetchPortfolio = async () => {
@@ -74,7 +125,11 @@ export const HomePage = () => {
         headers: {
           "ngrok-skip-browser-warning": "true",
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Include token in requests
         },
+        params: {
+          user_id: userId // Include user ID in the request query params
+        }
       });
       setPortfolio(response.data.portfolio || []);
     } catch (error) {
@@ -83,8 +138,10 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchPortfolio();
-  }, []);
+    if (token) {
+      fetchPortfolio();
+    }
+  }, [token]);
 
   const sendMessage = async () => {
     if (!chatInput.trim()) return;
@@ -99,7 +156,13 @@ export const HomePage = () => {
       // Include portfolio data in the query
       const response = await axios.post("https://rapid-grossly-raven.ngrok-free.app/gemini/ask", {
         query: chatInput,
-        portfolio: portfolio // Send portfolio data along with the query
+        portfolio: portfolio,
+        user_id: userId // Include user ID in the request body
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Include token in requests
+        }
       });
 
       setIsTyping(false);
@@ -318,8 +381,18 @@ export const HomePage = () => {
               <div>
                 <h2 className="text-xl font-bold">{user?.email}</h2>
                 <p>Registered Email</p>
+                {userId && <p className="user-id-display">User ID: {userId}</p>}
               </div>
             </div>
+            {token && (
+              <div className="token-section">
+                <h3 className="text-lg font-semibold mb-2">Your Access Token</h3>
+                <div className="token-container">
+                  <p className="token-text">{token}</p>
+                </div>
+                <p className="token-info">This token is used for authenticating your API requests.</p>
+              </div>
+            )}
           </div>
         );
       case "settings":
@@ -335,9 +408,15 @@ export const HomePage = () => {
                 <Settings className="settings-icon" />
                 <span>About</span>
               </div>
-              <div className="settings-option text-red-600">
+              <div 
+                className="settings-option text-red-600"
+                onClick={() => {
+                  console.log("Logging out user:", userId);
+                  logout();
+                }}
+              >
                 <LogOut className="settings-icon" />
-                <span onClick={logout}>Logout</span>
+                <span>Logout</span>
               </div>
               <div className="settings-option text-red-600">
                 <Trash2 className="settings-icon" />
@@ -385,12 +464,18 @@ export const HomePage = () => {
         
         <div className="header-right">
           {user ? (
-            <div className="user-profile" onClick={() => setActiveTab("profile")}>
-              <span className="user-name">{user.email}</span>
-              <div className="user-avatar">
-                <User size={20} />
+            <>
+              <div className="user-credentials">
+                {token && <div className="token-display">Token: {token.substring(0, 12)}...</div>}
+                {userId && <div className="userid-display">ID: {userId}</div>}
               </div>
-            </div>
+              <div className="user-profile" onClick={() => setActiveTab("profile")}>
+                <span className="user-name">{user.email}</span>
+                <div className="user-avatar">
+                  <User size={20} />
+                </div>
+              </div>
+            </>
           ) : (
             <button className="login-button" onClick={() => navigate("/login")}>
               Login
@@ -475,7 +560,13 @@ export const HomePage = () => {
             <Settings size={16} />
             <span>Settings</span>
           </div>
-          <div className="dropdown-option logout" onClick={logout}>
+          <div 
+            className="dropdown-option logout" 
+            onClick={() => {
+              console.log("Logging out user:", userId);
+              logout();
+            }}
+          >
             <LogOut size={16} />
             <span>Logout</span>
           </div>

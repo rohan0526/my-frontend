@@ -79,12 +79,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    socket.disconnect(); // Disconnect from WebSocket
-    setUser(null);
-    window.location.reload(); // Reload to ensure user is logged out
+  const logout = async () => {
+    try {
+      // Get user data from localStorage
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        const userId = userData.user_id;
+        const token = localStorage.getItem('token');
+        
+        // Send logout request to backend
+        await fetch('https://rapid-grossly-raven.ngrok-free.app/auth/logout', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ user_id: userId }),
+        });
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
+      // Clean up client side regardless of server response
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      socket.disconnect(); // Disconnect from WebSocket
+      setUser(null);
+      window.location.reload(); // Reload to ensure user is logged out
+    }
   };
   
   
