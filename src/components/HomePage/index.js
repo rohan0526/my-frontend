@@ -85,7 +85,16 @@ const QueryApp = () => {
 
 export const HomePage = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState(() => {
+    // Check localStorage for activeTab
+    const savedTab = localStorage.getItem('activeTab');
+    if (savedTab) {
+      // Clear the localStorage value after using it
+      localStorage.removeItem('activeTab');
+      return savedTab;
+    }
+    return "home";
+  });
   const [isWriting, setIsWriting] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -434,56 +443,6 @@ export const HomePage = () => {
 
   return (
     <div className="dashboard-container no-sidebar">
-      <header className="main-header">
-        <div className="header-left">
-          <div className="logo-container">
-            <img src="/images/logo-small.png" alt="FinGenius" className="logo-img" />
-            <span className="logo-text">FinGenius</span>
-          </div>
-        </div>
-        
-        <nav className="main-nav">
-          <ul className="nav-links">
-            <li className={activeTab === "home" ? "active" : ""} onClick={() => setActiveTab("home")}>
-              Home
-            </li>
-            <li className={activeTab === "ai-assistant" ? "active" : ""} onClick={() => setActiveTab("ai-assistant")}>
-              AI Assistant
-            </li>
-            <li className={activeTab === "trading-view" ? "active" : ""} onClick={() => setActiveTab("trading-view")}>
-              Trading View
-            </li>
-            <li className={activeTab === "stock-news" ? "active" : ""} onClick={() => setActiveTab("stock-news")}>
-              Stock News
-            </li>
-            <li className={activeTab === "finance-games" ? "active" : ""} onClick={() => setActiveTab("finance-games")}>
-              Finance Games
-            </li>
-          </ul>
-        </nav>
-        
-        <div className="header-right">
-          {user ? (
-            <>
-              <div className="user-credentials">
-                {token && <div className="token-display">Token: {token.substring(0, 12)}...</div>}
-                {userId && <div className="userid-display">ID: {userId}</div>}
-              </div>
-              <div className="user-profile" onClick={() => setActiveTab("profile")}>
-                <span className="user-name">{user.email}</span>
-                <div className="user-avatar">
-                  <User size={20} />
-                </div>
-              </div>
-            </>
-          ) : (
-            <button className="login-button" onClick={() => navigate("/login")}>
-              Login
-            </button>
-          )}
-        </div>
-      </header>
-
       <div className="main-content full-width">
         <div className="content-area">{renderContent()}</div>
 
@@ -552,26 +511,6 @@ export const HomePage = () => {
           </div>
         )}
       </div>
-
-      {/* Profile and Settings dropdown (can be shown when user clicks on profile) */}
-      {activeTab === "profile" && (
-        <div className="profile-dropdown">
-          <div className="dropdown-option" onClick={() => setActiveTab("settings")}>
-            <Settings size={16} />
-            <span>Settings</span>
-          </div>
-          <div 
-            className="dropdown-option logout" 
-            onClick={() => {
-              console.log("Logging out user:", userId);
-              logout();
-            }}
-          >
-            <LogOut size={16} />
-            <span>Logout</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

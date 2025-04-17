@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { AuthPage } from "./components/AuthPage";
 import { HomePage } from "./components/HomePage";
@@ -10,6 +10,13 @@ import { MessageCircle, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import axios from "axios";
 import "./styles/ChatPopup.css";
+import NavBar from "./components/NAVBAR/NavBar";
+
+// Import game pages
+import GamesPage from "./pages/GamesPage";
+import BudgetGame from "./pages/BudgetGame";
+import EscapeRoom from "./pages/EscapeRoom";
+import FakeOrFinance from "./pages/FakeOrFinance";
 
 const ChatPopup = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -129,18 +136,43 @@ const ChatPopup = () => {
   );
 };
 
+// Function to render the profile page
+const ProfilePage = () => {
+  const navigate = useNavigate();
+  
+  // Effect to set profile tab
+  useEffect(() => {
+    // You could set a global state here to indicate profile tab should be active
+    // For now, we'll just use localStorage as a simple approach
+    localStorage.setItem('activeTab', 'profile');
+  }, []);
+  
+  // Just redirect to homepage which will show profile content based on activeTab
+  return <Navigate to="/" />;
+};
+
 const AppContent = () => {
   const { user } = useAuth();
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
-        <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
-        <Route path="/chat" element={user ? <Chat /> : <Navigate to="/auth" />} />
-        <Route path="/papertrading" element={user ? <PaperTrading /> : <Navigate to="/auth" />} />
-        <Route path="/tradingview" element={user ? <TradingView /> : <Navigate to="/auth" />} />
-      </Routes>
+      {user && <NavBar />}
+      <div className="page-container">
+        <Routes>
+          <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
+          <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
+          <Route path="/chat" element={user ? <Chat /> : <Navigate to="/auth" />} />
+          <Route path="/papertrading" element={user ? <PaperTrading /> : <Navigate to="/auth" />} />
+          <Route path="/tradingview" element={user ? <TradingView /> : <Navigate to="/auth" />} />
+          <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/auth" />} />
+          
+          {/* Game Routes */}
+          <Route path="/games" element={user ? <GamesPage /> : <Navigate to="/auth" />} />
+          <Route path="/games/budget" element={user ? <BudgetGame /> : <Navigate to="/auth" />} />
+          <Route path="/games/escape-room" element={user ? <EscapeRoom /> : <Navigate to="/auth" />} />
+          <Route path="/games/fake-or-finance" element={user ? <FakeOrFinance /> : <Navigate to="/auth" />} />
+        </Routes>
+      </div>
       {user && <ChatPopup />}
     </>
   );
