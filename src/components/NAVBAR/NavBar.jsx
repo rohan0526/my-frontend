@@ -67,9 +67,6 @@ const NavBar = () => {
           <Link to="/chat" className={`nav-link ${isActive('/chat')}`}>
             AI Assistant
           </Link>
-          <Link to="/papertrading" className={`nav-link ${isActive('/papertrading')}`}>
-            Paper Trading
-          </Link>
           <Link to="/tradingview" className={`nav-link ${isActive('/tradingview')}`}>
             Trading View
           </Link>
