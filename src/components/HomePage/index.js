@@ -216,7 +216,7 @@ export const HomePage = () => {
                 Start Trading
               </button>
             </div>
-            {/* Add animated indicators */}
+            {/* Interactive market indicators */}
             <div className="market-indicators">
               <div className="indicator up">
                 <span className="symbol">NASDAQ</span>
@@ -233,12 +233,12 @@ export const HomePage = () => {
             </div>
           </div>
           <div className="hero-image">
-            <img src="/images/financial-ai.png" alt="Financial AI" className="floating-animation" />
+            <img src={require("../../assets/images/financial-ai.png")} alt="Financial AI" className="floating-animation" />
             <div className="glowing-orb"></div>
           </div>
         </section>
 
-        {/* Colorful Stats Section - New Addition */}
+        {/* Animated Stats Section */}
         <section className="stats-section">
           <div className="stat-card purple">
             <h3>10,000+</h3>
@@ -258,7 +258,7 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* Enhanced Features Section with Icons */}
+        {/* Enhanced Features Section with Interactions */}
         <section className="features-section">
           <h2 className="section-title">Discover Our Features</h2>
           <div className="features-grid">
@@ -289,7 +289,7 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* Improved How It Works Section */}
+        {/* Dynamic How It Works Section */}
         <section className="how-it-works-section">
           <h2 className="section-title">How FinGenius Works</h2>
           <div className="steps-container">
@@ -298,19 +298,16 @@ export const HomePage = () => {
               <h3>Sign Up</h3>
               <p>Create your account in seconds and set your financial goals.</p>
             </div>
-            <div className="connector"></div>
             <div className="step-card">
               <div className="step-number">2</div>
               <h3>Connect</h3>
               <p>Link your financial accounts or explore market data.</p>
             </div>
-            <div className="connector"></div>
             <div className="step-card">
               <div className="step-number">3</div>
               <h3>Get Insights</h3>
               <p>Receive AI-powered financial advice tailored to your needs.</p>
             </div>
-            <div className="connector"></div>
             <div className="step-card">
               <div className="step-number">4</div>
               <h3>Take Action</h3>
@@ -319,7 +316,7 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* Enhanced Testimonials Section */}
+        {/* Enhanced Interactive Testimonials */}
         <section className="testimonials-section">
           <h2 className="section-title">What Our Users Say</h2>
           <div className="testimonial-card highlighted">
@@ -341,7 +338,7 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* Footer */}
+        {/* Enhanced Footer with Animation */}
         <footer className="fingenius-footer">
           <div className="footer-column">
             <h3>FinGenius</h3>
@@ -358,8 +355,8 @@ export const HomePage = () => {
               <li onClick={() => setActiveTab("home")}>Home</li>
               <li onClick={() => setActiveTab("ai-assistant")}>AI Assistant</li>
               <li onClick={() => setActiveTab("trading-view")}>Trading View</li>
-              <li>Stock News</li>
-              <li>Finance Games</li>
+              <li onClick={() => setActiveTab("stock-news")}>Stock News</li>
+              <li onClick={() => setActiveTab("finance-games")}>Finance Games</li>
             </ul>
           </div>
           <div className="footer-column">

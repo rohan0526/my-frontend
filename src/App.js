@@ -156,7 +156,7 @@ const AppContent = () => {
   return (
     <>
       {user && <NavBar />}
-      <div className="page-container">
+      <div className="page-container" style={{ margin: 0, padding: 0 }}>
         <Routes>
           <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={user ? <Navigate to="/" /> : <AuthPage />} />
@@ -178,10 +178,12 @@ const AppContent = () => {
 
 export const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
+    <div className="app-wrapper" style={{ margin: 0, padding: 0 }}>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
+    </div>
   );
 };

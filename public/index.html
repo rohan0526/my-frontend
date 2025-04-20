@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="margin: 0; padding: 0; height: 100%;">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -25,10 +25,19 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <style>
+      html, body, #root {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        overflow-x: hidden;
+      }
+    </style>
   </head>
-  <body>
+  <body style="margin: 0; padding: 0; height: 100%; width: 100%; overflow-x: hidden;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" style="min-height: 100%; display: flex; flex-direction: column;"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

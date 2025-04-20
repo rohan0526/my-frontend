@@ -10,6 +10,7 @@ export const SignupForm = ({ onToggleMode }) => {
   });
   const [error, setError] = useState('');
   const { signup, loading } = useAuth();
+  const [focusedField, setFocusedField] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,10 +35,18 @@ export const SignupForm = ({ onToggleMode }) => {
       [e.target.name]: e.target.value
     }));
   };
+  
+  const handleFocus = (field) => {
+    setFocusedField(field);
+  };
+
+  const handleBlur = () => {
+    setFocusedField(null);
+  };
 
   return (
     <div className="signup-form-container">
-      <h2 className="signup-form-heading">Sign Up</h2>
+      <h2 className="signup-form-heading">Create Account</h2>
       {error && <div className="signup-form-error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -46,9 +55,11 @@ export const SignupForm = ({ onToggleMode }) => {
             name="email"
             placeholder="Email"
             required
-            className="signup-form-input"
+            className={`signup-form-input ${focusedField === 'email' ? 'focused' : ''}`}
             value={formData.email}
             onChange={handleChange}
+            onFocus={() => handleFocus('email')}
+            onBlur={handleBlur}
           />
         </div>
         <div>
@@ -57,9 +68,11 @@ export const SignupForm = ({ onToggleMode }) => {
             name="password"
             placeholder="Password"
             required
-            className="signup-form-input"
+            className={`signup-form-input ${focusedField === 'password' ? 'focused' : ''}`}
             value={formData.password}
             onChange={handleChange}
+            onFocus={() => handleFocus('password')}
+            onBlur={handleBlur}
           />
         </div>
         <div>
@@ -68,9 +81,11 @@ export const SignupForm = ({ onToggleMode }) => {
             name="confirmPassword"
             placeholder="Confirm Password"
             required
-            className="signup-form-input"
+            className={`signup-form-input ${focusedField === 'confirmPassword' ? 'focused' : ''}`}
             value={formData.confirmPassword}
             onChange={handleChange}
+            onFocus={() => handleFocus('confirmPassword')}
+            onBlur={handleBlur}
           />
         </div>
         <button
@@ -78,7 +93,7 @@ export const SignupForm = ({ onToggleMode }) => {
           disabled={loading}
           className="signup-form-button"
         >
-         <h class="text"> {loading ? 'Loading...' : 'Sign Up'} </h>
+          <span className="text">{loading ? 'Creating account...' : 'Sign Up'}</span>
         </button>
       </form>
       <button

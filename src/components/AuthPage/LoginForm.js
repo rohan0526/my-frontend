@@ -6,6 +6,7 @@ export const LoginForm = ({ onToggleMode }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const { login, loading } = useAuth();
+  const [focusedField, setFocusedField] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +25,17 @@ export const LoginForm = ({ onToggleMode }) => {
     }));
   };
 
+  const handleFocus = (field) => {
+    setFocusedField(field);
+  };
+
+  const handleBlur = () => {
+    setFocusedField(null);
+  };
+
   return (
     <div className="login-form-container">
-      <h2 className="login-form-heading">Login</h2>
+      <h2 className="login-form-heading">Welcome Back</h2>
 
       {error && <div className="login-form-error">{error}</div>}
 
@@ -37,9 +46,11 @@ export const LoginForm = ({ onToggleMode }) => {
             name="email"
             placeholder="Email"
             required
-            className="login-form-input"
+            className={`login-form-input ${focusedField === 'email' ? 'focused' : ''}`}
             value={formData.email}
             onChange={handleChange}
+            onFocus={() => handleFocus('email')}
+            onBlur={handleBlur}
           />
         </div>
         <div>
@@ -48,9 +59,11 @@ export const LoginForm = ({ onToggleMode }) => {
             name="password"
             placeholder="Password"
             required
-            className="login-form-input"
+            className={`login-form-input ${focusedField === 'password' ? 'focused' : ''}`}
             value={formData.password}
             onChange={handleChange}
+            onFocus={() => handleFocus('password')}
+            onBlur={handleBlur}
           />
         </div>
         <button
