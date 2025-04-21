@@ -11,6 +11,7 @@ const NavBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
+  const [isStockNewsActive, setIsStockNewsActive] = useState(false);
   
   useEffect(() => {
     // Get token and userId from localStorage
@@ -31,7 +32,15 @@ const NavBar = () => {
         console.error("Error parsing user data:", error);
       }
     }
-  }, []);
+    
+    // Check if stock-news is active
+    const activeTab = localStorage.getItem('activeTab');
+    if (activeTab === 'stock-news') {
+      setIsStockNewsActive(true);
+    } else {
+      setIsStockNewsActive(false);
+    }
+  }, [location.pathname]);
   
   const isActive = (path) => {
     return location.pathname === path ? 'active' : '';
@@ -52,6 +61,14 @@ const NavBar = () => {
     setShowDropdown(false);
   };
 
+  const navigateToStockNews = () => {
+    // Set the active tab directly
+    localStorage.setItem('activeTab', 'stock-news');
+    setIsStockNewsActive(true);
+    // Force navigation to trigger rerender
+    navigate('/?tab=stock-news');
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -61,7 +78,7 @@ const NavBar = () => {
         </Link>
         
         <div className="navbar-links">
-          <Link to="/" className={`nav-link ${isActive('/')}`}>
+          <Link to="/" className={`nav-link ${isActive('/') && !isStockNewsActive ? 'active' : ''}`}>
             Home
           </Link>
           <Link to="/chat" className={`nav-link ${isActive('/chat')}`}>
@@ -73,6 +90,9 @@ const NavBar = () => {
           <Link to="/games" className={`nav-link ${isActive('/games')}`}>
             Finance Games
           </Link>
+          <a onClick={navigateToStockNews} className={`nav-link ${isStockNewsActive ? 'active' : ''}`}>
+            Stock News
+          </a>
         </div>
         
         <div className="user-section">

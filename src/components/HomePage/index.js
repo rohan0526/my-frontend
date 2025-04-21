@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./CSS/index.css";
 import { User, Settings, Home, HelpCircle, LogOut, Trash2, PenLine, Cpu, X, MessageCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import StockNews from "../StockNews";
 
@@ -85,16 +85,33 @@ const QueryApp = () => {
 
 export const HomePage = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check for query parameter first, then localStorage
   const [activeTab, setActiveTab] = useState(() => {
-    // Check localStorage for activeTab
+    // First check URL query params
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get('tab');
+    
+    if (tabParam === 'stock-news') {
+      return 'stock-news';
+    }
+    
+    // Then check localStorage
     const savedTab = localStorage.getItem('activeTab');
     if (savedTab) {
-      // Clear the localStorage value after using it
-      localStorage.removeItem('activeTab');
       return savedTab;
     }
+    
     return "home";
   });
+  
+  // Clear localStorage value after using it
+  useEffect(() => {
+    localStorage.removeItem('activeTab');
+  }, []);
+  
   const [isWriting, setIsWriting] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -104,7 +121,6 @@ export const HomePage = () => {
   const [portfolio, setPortfolio] = useState([]);
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
-  const navigate = useNavigate();
 
   // Get token and userId from localStorage
   useEffect(() => {
@@ -185,14 +201,14 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
+    // Check for active tab after component mounts or activeTab changes
     if (activeTab === "ai-assistant") {
       navigate("/chat");
-    }
-  }, [activeTab, navigate]);
-
-  useEffect(() => {
-    if (activeTab === "trading-view") {
+    } else if (activeTab === "trading-view") {
       navigate("/tradingview");
+    } else if (activeTab === "stock-news") {
+      // Just stay on the homepage and render StockNews
+      console.log("Showing Stock News Component");
     }
   }, [activeTab, navigate]);
 

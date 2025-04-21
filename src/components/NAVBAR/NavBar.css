@@ -49,6 +49,7 @@
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
+  cursor: pointer;
 }
 
 .nav-link:hover {
