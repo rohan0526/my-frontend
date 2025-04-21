@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../game/CSS/index.css';
-import placeholderImages from '../assets/placeholder';
+import fakeFinanceImage from '../assets/images/fakef.jpg';
 
 const FakeOrFinance = () => {
   const navigate = useNavigate();
@@ -203,7 +203,7 @@ const FakeOrFinance = () => {
             </button>
           </div>
           <div className="game-intro-image">
-            <img src={placeholderImages.fakeOrFinance} alt="Fake or Finance" />
+            <img src={fakeFinanceImage} alt="Fake or Finance" />
           </div>
         </div>
       ) : (

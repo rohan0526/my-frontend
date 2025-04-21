@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../game/CSS/index.css';
-import placeholderImages from '../assets/placeholder';
+import budgetGameImage from '../assets/images/budgetgame.jpg';
 
 const BudgetGame = () => {
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ const BudgetGame = () => {
             </button>
           </div>
           <div className="game-intro-image">
-            <img src={placeholderImages.budgetGame} alt="Budget Game" />
+            <img src={budgetGameImage} alt="Budget Game" />
           </div>
         </div>
       ) : (

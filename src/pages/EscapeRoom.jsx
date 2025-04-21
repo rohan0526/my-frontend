@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../game/CSS/index.css';
-import placeholderImages from '../assets/placeholder';
+import escapeRoomImage from '../assets/images/escape room.jpg';
 
 const EscapeRoom = () => {
   const navigate = useNavigate();
@@ -115,7 +115,7 @@ const EscapeRoom = () => {
             </button>
           </div>
           <div className="game-intro-image">
-            <img src={placeholderImages.escapeRoom} alt="Escape Room" />
+            <img src={escapeRoomImage} alt="Escape Room" />
           </div>
         </div>
       ) : (

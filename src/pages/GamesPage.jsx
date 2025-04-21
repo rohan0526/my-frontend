@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import GameCard from '../components/GameCard';
 import '../game/CSS/index.css';
-import placeholderImages from '../assets/placeholder';
+import budgetGameImage from '../assets/images/budgetgame.jpg';
+import escapeRoomImage from '../assets/images/escape room.jpg';
+import fakeFinanceImage from '../assets/images/fakef.jpg';
 
 const GamesPage = () => {
   const [animateCards, setAnimateCards] = useState(false);
@@ -18,7 +20,7 @@ const GamesPage = () => {
       id: 1,
       title: 'Budget Challenge',
       description: 'Learn to manage your finances by making budget decisions in different scenarios.',
-      image: placeholderImages.budgetGame,
+      image: budgetGameImage,
       path: '/games/budget',
       difficulty: 'Beginner'
     },
@@ -26,7 +28,7 @@ const GamesPage = () => {
       id: 2,
       title: 'Financial Escape Room',
       description: 'Solve puzzles and financial riddles to escape the room and master investment concepts.',
-      image: placeholderImages.escapeRoom,
+      image: escapeRoomImage,
       path: '/games/escape-room',
       difficulty: 'Intermediate'
     },
@@ -34,7 +36,7 @@ const GamesPage = () => {
       id: 3,
       title: 'Fake or Finance',
       description: 'Test your knowledge of financial terms and spot financial scams in this quiz game.',
-      image: placeholderImages.fakeOrFinance,
+      image: fakeFinanceImage,
       path: '/games/fake-or-finance',
       difficulty: 'Advanced'
     }
