@@ -25,12 +25,28 @@
   color: #4a63e7;
   font-weight: 600;
   font-size: 1.5rem;
+  gap: 12px;
 }
 
 .logo-svg {
-  height: 30px;
-  width: 30px;
-  margin-right: 10px;
+  height: 35px;
+  width: 35px;
+  object-fit: contain;
+  filter: brightness(1.1) contrast(1.1);
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover .logo-svg {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #4a63e7, #6b8aff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .navbar-links {
@@ -244,8 +260,13 @@
     display: none;
   }
   
-  .navbar-logo .logo-text {
-    display: none;
+  .navbar-logo .logo-svg {
+    height: 30px;
+    width: 30px;
+  }
+  
+  .logo-text {
+    font-size: 1.3rem;
   }
   
   .navbar-links {
@@ -268,6 +289,15 @@
   
   .profile-icon {
     display: block;
+  }
+  
+  .navbar-logo .logo-svg {
+    height: 28px;
+    width: 28px;
+  }
+  
+  .logo-text {
+    font-size: 1.2rem;
   }
 }
 

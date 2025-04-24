@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './NavBar.css';
-import { ReactComponent as LogoSVG } from '../../assets/logo.svg';
+import newLogo from '../../assets/images/new-logo.png';
 import { useAuth } from '../../context/AuthContext';
 
 const NavBar = () => {
@@ -73,7 +73,7 @@ const NavBar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <LogoSVG className="logo-svg" />
+          <img src={newLogo} alt="FinGenius" className="logo-svg" />
           <span className="logo-text">FinGenius</span>
         </Link>
         
